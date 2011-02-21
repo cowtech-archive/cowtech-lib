@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'jeweler'
+require "./lib/cowtech-lib/version.rb"
 
 Jeweler::Tasks.new do |gem|
   gem.name = "cowtech-lib"
@@ -9,6 +10,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{A general purpose utility library.}
   gem.email = "shogun_panda@me.com"
   gem.authors = ["Shogun"]
+  gem.version = Cowtech::Lib::Version::STRING
 end
 
 Jeweler::RubygemsDotOrgTasks.new
