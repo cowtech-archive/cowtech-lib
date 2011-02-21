@@ -87,7 +87,7 @@ module Cowtech
             when :action then
               option[:required] = false
             else
-              option[:default] = @@valid_types[option[:type]][1] unless option[:default].is_a?(@@valid_types[option[:type]][0]) == false || option[:default] == nil
+              option[:default] = @@valid_types[option[:type]][1] unless option[:default].is_a?(@@valid_types[option[:type]][0]) == true || option[:default] != nil
           end
 
           # Adjust priority
@@ -225,7 +225,7 @@ module Cowtech
       # Returns: The option value
       def get(name, default = nil)
         name = name.to_sym
-      
+
         if @options[name][:value] != nil then
           @options[name][:value]
         elsif default != nil then
