@@ -22,8 +22,12 @@
 #	A copy of the GNU General Public License is available at: http://www.gnu.org/licenses/gpl.txt
 #
 
-require "rubygems"
-require "CowtechLib/Console"
-require "CowtechLib/OptionParser"
-require "CowtechLib/Shell"
-require "CowtechLib/Script"
+module Cowtech
+  module Lib
+    autoload :Version, 'cowtech-lib/version'
+    autoload :Console, 'cowtech-lib/console'
+    autoload :OptionParser, 'cowtech-lib/option_parser'
+    autoload :Shell, 'cowtech-lib/shell'
+    autoload :Script, 'cowtech-lib/script'
+  end
+end

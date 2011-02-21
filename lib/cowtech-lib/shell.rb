@@ -25,12 +25,11 @@
 # THE SOFTWARE.
 #
 
-require "rexml/document"
 require "open4"
 require "find"
 require "fileutils"
 
-module CowtechLib
+module Cowtech
   module Lib
     # A class which provides some useful method for interaction with files and processes.
     # @author Shogun
@@ -45,11 +44,11 @@ module CowtechLib
       # * <em>fatal</em>: If abort on failure
       # 
       # Returns: An object which the status attribute is the exit status of the process, and the output attribute is the output of the command
-      def run(msg, cmd, show_msg = true, show_exit = true, fatal = false)
+      def run(args)
         rv = {:status => 0, :output => []}
         command = args[:command]
 
-        @console.write(:begin => args[:msg]) if args[:msg]
+        @console.write(:begin => args[:msg]) if args[:show_msg]
 
         if @console.show_commands then
           @console.warn("Will run command: \"#{command}\"", :dots => false)
@@ -66,7 +65,8 @@ module CowtechLib
         end
         rv[:output] = rv[:output].join("\n")
 
-        self.status(rv[:status] == 0 ? :ok : :fail) if args[:show_exit]
+        self.status(:status => rv[:status] == 0 ? :ok : :fail, :fatal => false) if args[:show_exit]
+        exit(1) if args[:fatal] and rv[:status] != 0
         rv
       end
 
@@ -78,9 +78,9 @@ module CowtechLib
       # * <em>codec</em>: The encoding used to open the file. <b>UNUSED FOR NOW!</b>
       # 
       # Returns: A new <em>File</em> object
-      def open_file(*args)
+      def open_file(args)
         begin
-          File.new(args[:name], args[:mode] || "r" + (args[:codec] : ? ":#{args[:codce]}" : ""))
+          File.new(args[:name], (args[:mode] || "r") + (args[:codec] ? ":#{args[:codec]}" : ""))
         rescue Exception => e
           @console.write(:error => "Unable to open file #{name}: #{e}")
           nil
@@ -103,9 +103,9 @@ module CowtechLib
       # * <em>:fc_symlink</em>: Check if the file is symbolic link
       # 
       # Returns: <em>true</em> if any of tests had success, <em>false</em> otherwise
-      def file_check?(*args)
+      def file_check?(args)
         rv = false
-        tests = args[:tests].to_a
+        tests = (args[:tests] || [:exists]).to_a
 
         if args[:file] then
           rv = true
@@ -125,7 +125,7 @@ module CowtechLib
       # * <em>show_error</em>: Whether show errors occurred
       # 
       # Returns: <em>true</em> if operation had success, <em>false</em> otherwise.
-      def delete_files!(*args)
+      def delete_files!(args)
         rv = true
         files = args[:files].to_a
 
@@ -135,7 +135,7 @@ module CowtechLib
           if args[:show_errors] == true then
             if e.message =~ /^Permission denied - (.+)/ then
               @console.error("Cannot remove following non writable entry: #{$1}", :dots => false, :fatal => args[:fatal])
-            elsif e.message =~ /^No such file or directory - (.+)/) then
+            elsif e.message =~ /^No such file or directory - (.+)/ then
               @console.error("Cannot remove following non existent entry: #{$1}", :dots => false, :fatal => args[:fatal])
             end
           end
@@ -167,7 +167,7 @@ module CowtechLib
       # * <em>show_error</em>: Whether show errors occurred
       # 
       # Returns: <em>true</em> if operation had success, <em>false</em> otherwise.
-      def create_directories(*args)
+      def create_directories(args)
         rv = true
         files = args[:files].to_a
 
@@ -223,7 +223,7 @@ module CowtechLib
       # * <em>show_error</em>: Whether show errors occurred
       # 
       # Returns: <em>true</em> if operation had success, <em>false</em> otherwise.
-      def copy(*args)
+      def copy(args)
         rv = true
         move = args[:move]
 
@@ -248,7 +248,6 @@ module CowtechLib
               rv = false
             rescue Exception => e
               if args[:show_errors] then
-                self.error(, false)
                 @console.error("Cannot #{if move then "move" else "copy" end} following entries to <text style=\"bold white\">#{dest}</text>:", :dots => false)
                 @console.indent_region(3) do
                   files.each do |afile|
@@ -302,7 +301,7 @@ module CowtechLib
       # * <em>show_error</em>: Whether show errors occurred
       # 
       # Returns: <em>true</em> if operation had success, <em>false</em> otherwise.
-      def rename(*args)
+      def rename(args)
         rv = true
 
         if src.is_a?(String) and dst.is_a?(String) then
@@ -322,7 +321,7 @@ module CowtechLib
       # * <em>patterns</em>: List of requested patterns
       # 
       # Returns: List of found files.
-      def find_by_pattern(*args)
+      def find_by_pattern(args)
         # TODO: E se patterns è vuoto?
         rv = []
 
@@ -362,12 +361,18 @@ module CowtechLib
       # * <em>extensions</em>: List of requested extensions
       # 
       # Returns: List of found files.
-      def find_by_extension(*args)
+      def find_by_extension(args)
         args[:patterns] = (args[:extensions] || "").to_a.collect do |extension| 
           Regexp.new(extension + "$", Regexp::IGNORECASE) 
         end
 
-        self.find_by_pattern(*args)
+        self.find_by_pattern(args)
+      end
+      
+      # Creates a new shell
+      def initialize(console = nil)
+        console ||= Console.new
+        @console = console
       end
     end
   end

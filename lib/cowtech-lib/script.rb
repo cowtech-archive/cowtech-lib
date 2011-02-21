@@ -25,18 +25,11 @@
 # THE SOFTWARE.
 #
 
-require "pp"
-require "rexml/document"
-require "rubygems"
-require "open4"
-require "find"
-require "CowtechLib/Console"
-require "CowtechLib/OptionParser"
-
 module Cowtech
   module Lib
     # Class which implements a script to execute general tasks.
     # @author Shogun 
+
     class Script
       # Console object
       attr_reader :console
@@ -58,25 +51,25 @@ module Cowtech
       #   * <em>pre_usage</em>: Message to print before the usage string
       #   * <em>pre_options</em>: Message to print before the options list
       #   * <em>post_options</em>: Message to print after the options list
-      def initialize(*args)
+      def initialize(args)
         @console = Console.new
-        @shell = Console.new(@console)
-        @options_parser = OptionParser.new(*args)
+        @shell = Shell.new(@console)
+        @options_parser = OptionParser.new(args)
 
         self.add_options()
         @options_parser << [
-          {:name => "command-echo", :short => "-z", :long => "--command-echo", :type => :bool, :help => "Show executed commands."}
-          {:name => "command-show", :short => "-V", :long => "--command-show", :type => :bool, :help => "Show executed commands' output."}
+          {:name => "command-echo", :short => "-z", :long => "--command-echo", :type => :bool, :help => "Show executed commands."},
+          {:name => "command-show", :short => "-V", :long => "--command-show", :type => :bool, :help => "Show executed commands' output."},
           {:name => "command-skip", :short => "-Z", :long => "--command-skip", :type => :bool, :help => "Don't really execut commands, only print them."}
         ]
 
-        @options_parser.parse()
+        @options_parser.parse
 
         @console.show_commands = @options_parser["command-echo"]
         @console.show_outputs = @options_parser["command-show"]
         @console.skip_commands = @options_parser["command-skip"]
 
-        self.run()
+        self.run
       end
     
       # Execute a task, showing a message.
@@ -87,35 +80,40 @@ module Cowtech
       # * <em>show_end</em>: If show message exit status
       # * <em>go_up</em>: If go up one line to show exit status
       # * <em>dots</em>: If show dots after message
-      def task(*args)
-        if args[:show_msg] then
-          @console.msg(:msg => msg, :dots => args[:dots], :begin => true) if args[:show_msg]
-          @console.indent(3)
+      def task(args)
+        if args.fetch(:show_msg, true) then
+          @console.write(:begin => args[:msg], :dots => args[:dots]) if args.fetch(:show_msg, true)
+          @console.indent_set(3)
         end
       
         # Run the block
-        rv = yield || :ok
+        rv = yield
+        rv = :ok unless rv.is_a?(Symbol)
+        rv = [rv, true] unless rv.is_a?(Array)
       
         # Show the result
-        @console.result(:result = rv.try("[]", 0) || rv, :fatal => rv.try("[]", 1) == nil ? true : rv.try("[]", 1)) if args[:show_result]
-        @console.indent(-3)
+        if args.fetch(:show_result, true) then
+          @console.status(:status => rv[0], :fatal => false) if args.fetch(:show_result, true)
+          @console.indent_set(-3)
+        end
+
+        exit(1) if rv[0] != :ok && rv[1]
       end
 
       # Run the script. 
       #<b> MUST BY OVERRIDEN BY SUBCLASSES!</b>
       def run
-        self.console.fatal("Script::run() must be overidden by subclass")
+        self.console.fatal("Cowtech::Lib::Script#run must be overidden by subclasses.")
       end
     
       # Adds the command line options.
       # <b>MUST BE OVERRIDEN BY SUBCLASSES!</b>
       def add_options 
-        self.console.fatal("Cowtech::Lib::Script::add_options must be overidden by subclass.")
+        self.console.fatal("Cowtech::Lib::Script#add_options must be overidden by subclasses.")
       end
       
-      # Executes the script
-      def self.execute!
-        self.new.run
+      def get_binding
+        binding
       end
     end
   end
