@@ -110,7 +110,8 @@ module Cowtech
         if args[:file] then
           rv = true
           tests.each do |test| 
-            rv = rv && FileTest.try((test.to_s + "?").to_sym, args[:file]) 
+            method = (test.to_s + "?").to_sym
+            rv = rv && (FileTest.respond_to?(method) ? FileTest.send(method, args[:file]) : false) 
           end
         end
 
