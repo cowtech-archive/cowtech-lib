@@ -82,7 +82,7 @@ module Cowtech
       # * <em>dots</em>: If show dots after message
       def task(args)
         if args.fetch(:show_msg, true) then
-          @console.write(:begin => args[:msg], :dots => args[:dots]) if args.fetch(:show_msg, true)
+          @console.write(:begin => args[:msg], :dots => args[:dots])
           @console.indent_set(3)
         end
       
@@ -93,7 +93,7 @@ module Cowtech
       
         # Show the result
         if args.fetch(:show_result, true) then
-          @console.status(:status => rv[0], :fatal => false) if args.fetch(:show_result, true)
+          @console.status(:status => rv[0], :fatal => false)
           @console.indent_set(-3)
         end
 

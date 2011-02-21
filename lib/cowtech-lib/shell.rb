@@ -105,7 +105,7 @@ module Cowtech
       # Returns: <em>true</em> if any of tests had success, <em>false</em> otherwise
       def file_check?(args)
         rv = false
-        tests = (args[:tests] || [:exists]).to_a
+        tests = (args[:tests] || [:exists]).force_array
 
         if args[:file] then
           rv = true
@@ -127,7 +127,7 @@ module Cowtech
       # Returns: <em>true</em> if operation had success, <em>false</em> otherwise.
       def delete_files!(args)
         rv = true
-        files = args[:files].to_a
+        files = args[:files].force_array
 
         begin
           FileUtils.rm_r(files, {:noop => @console.skip_commands, :verbose => @console.skip_commands, :secure => true})
@@ -169,7 +169,7 @@ module Cowtech
       # Returns: <em>true</em> if operation had success, <em>false</em> otherwise.
       def create_directories(args)
         rv = true
-        files = args[:files].to_a
+        files = args[:files].force_array
 
         files.each do |file| 
           if self.file_check?(:files => file, :tests => :exists) then
@@ -229,7 +229,7 @@ module Cowtech
 
         # If we are copy or moving to a directory
         if args[:destination_is_directory] then
-          files = (args[:files] || []).to_a
+          files = (args[:files] || []).force_array
           dest = args[:dest]
           dest += "/" if self.file_check?(dest, :directory) and dest !~ /\/$/
 
@@ -325,8 +325,8 @@ module Cowtech
         # TODO: E se patterns è vuoto?
         rv = []
 
-        paths = args[:paths].to_a
-        string_patterns = args[:patterns].to_a
+        paths = args[:paths].force_array
+        string_patterns = args[:patterns].force_array
 
         if paths.length > 0 then
           # Convert patterns to regexp
@@ -362,7 +362,7 @@ module Cowtech
       # 
       # Returns: List of found files.
       def find_by_extension(args)
-        args[:patterns] = (args[:extensions] || "").to_a.collect do |extension| 
+        args[:patterns] = (args[:extensions] || "").force_array.collect do |extension| 
           Regexp.new(extension + "$", Regexp::IGNORECASE) 
         end
 

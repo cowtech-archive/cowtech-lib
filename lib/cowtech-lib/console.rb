@@ -27,9 +27,9 @@
 
 require "rexml/document"
 
-class String
-  def to_a
-    [self]
+class Object
+  def force_array
+    self.is_a?(Array) ? self : [self]
   end
 end
 
@@ -285,7 +285,7 @@ module Cowtech
         msg += " " unless msg =~ / ^/
 
         # Turn choices into regular expressions
-        regexps = (args[:valids] || []).to_a.collect do |valid|
+        regexps = (args[:valids] || []).force_array.collect do |valid|
           unless valid.is_a?(Regexp) then
             valid = Regexp.new((valid !~ /^\^/ ? "^" : "") + valid + (valid !~ /\$$/ ? "$" : ""), Regexp::EXTENDED + (args[:case_sensitive] ? Regexp::IGNORECASE : 0), "U")
           else
