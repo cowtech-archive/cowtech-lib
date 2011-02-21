@@ -1,6 +1,7 @@
 = cowtech-lib
 
-Description goes here.
+A general purpose utility library.
+http://github.com/ShogunPanda/cowtech-lib
 
 == Contributing to cowtech-lib
  
@@ -14,6 +15,5 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2011 Shogun. See LICENSE.txt for
-further details.
+Copyright (c) 2011 Shogun. See LICENSE.txt for further details.
 
