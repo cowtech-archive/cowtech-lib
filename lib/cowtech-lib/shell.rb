@@ -56,7 +56,7 @@ module Cowtech
         end
 
         unless @console.skip_commands == true then
-          rv[:status] = Open4::open4(cmd + " 2>&1") { |pid, stdin, stdout, stderr|
+          rv[:status] = Open4::open4(command + " 2>&1") { |pid, stdin, stdout, stderr|
             stdout.each_line do |line|
               rv[:output] << line
               print line if @console.show_outputs
