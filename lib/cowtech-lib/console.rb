@@ -169,7 +169,7 @@ module Cowtech
         end
 
         # Add dots and indentation if needed
-        msg = self.indent(msg + (args.fetch(:dots, true) ? "..." : ""), args[:indent] ? @indent_level : 0)
+        msg = self.indent(msg + (args.fetch(:dots, true) ? "..." : ""), args[:indent] ? args[:indent] : @indent_level)
         
         # Parse the message
         unless args[:plain] then
