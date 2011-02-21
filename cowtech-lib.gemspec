@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
+    "cowtech-lib.gemspec",
     "lib/cowtech-lib.rb",
     "lib/cowtech-lib/console.rb",
     "lib/cowtech-lib/option_parser.rb",
