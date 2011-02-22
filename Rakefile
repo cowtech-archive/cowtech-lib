@@ -11,6 +11,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = "shogun_panda@me.com"
   gem.authors = ["Shogun"]
   gem.version = Cowtech::Lib::Version::STRING
+  gem.add_dependency 'open4'
 end
 
 Jeweler::RubygemsDotOrgTasks.new
