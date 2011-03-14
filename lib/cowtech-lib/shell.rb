@@ -193,7 +193,7 @@ module Cowtech
 
               rv = false
             rescue Exception => e
-              if args[:show_error] == true then
+              if args[:show_errors] == true then
                 @console.error("Cannot create following directory:", :dots => false)
                 @console.indent_region(3) do
                   files.each do |afile|
@@ -265,7 +265,7 @@ module Cowtech
           end
         else # If we are copying or moving to a file
           unless files.kind_of?(String) == true and dest.kind_of?(String) == true then
-            self.error("Cowtech::Lib::Shell#copy: To copy a single file, both files and dest arguments must be a string.", :dots => false, :fatal => args[:fatal])
+            @console.error("Cowtech::Lib::Shell#copy: To copy a single file, both files and dest arguments must be a string.", :dots => false, :fatal => args[:fatal])
             rv = false
           else
             dst_dir = File.dirname(dest)
