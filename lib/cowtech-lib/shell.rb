@@ -232,7 +232,7 @@ module Cowtech
         if args[:destination_is_directory] then
           files = (args[:files] || []).force_array
           dest = args[:dest]
-          dest += "/" if self.file_check?(dest, :directory) and dest !~ /\/$/
+          dest += "/" if self.file_check?(:file => dest, :tests => :directory) and dest !~ /\/$/
 
           files.each do |file|
             begin
