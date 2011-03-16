@@ -98,6 +98,7 @@ module Cowtech
         end
 
         exit(1) if rv[0] != :ok && rv[1]
+        rv
       end
 
       # Run the script. 
