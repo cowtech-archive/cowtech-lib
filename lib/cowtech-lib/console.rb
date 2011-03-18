@@ -165,11 +165,15 @@ module Cowtech
         if [:begin, :warn, :error, :debug, :info].include?(args[:type]) then
           mc = {:begin => "bold green", :warn => "bold yellow", :error => "bold red", :debug => "magenta", :info => "bold cyan"}
           color = args[:color] || mc[args[:type]]
-          msg = !args[:full_color] ? "<text style=\"#{color}\">*</text> #{self.indent(msg)}" : "<text style=\"#{color}\">* #{self.indent(msg)}</text>"
+          
+          if args[:full_color] then
+            msg = self.indent("<text style=\"#{color}\">#{msg}</text>")
+          else
+            msg = " <text style=\"#{color}\">*</text> #{self.indent(msg)}" 
+          end
+        else # Add dots and indentation if needed
+          msg = self.indent(msg + (args.fetch(:dots, true) ? "..." : ""), args[:indent] ? args[:indent] : @indent_level)
         end
-
-        # Add dots and indentation if needed
-        msg = self.indent(msg + (args.fetch(:dots, true) ? "..." : ""), args[:indent] ? args[:indent] : @indent_level)
         
         # Parse the message
         unless args[:plain] then
