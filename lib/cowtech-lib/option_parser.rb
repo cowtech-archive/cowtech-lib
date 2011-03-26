@@ -193,7 +193,7 @@ module Cowtech
           option = @options[key]
 
           if option[:required] == true and option[:value] == nil then
-            @console.fatal(:msg => "Required option \"#{opt.name}\" not specified.", :dots => false)          
+            @console.fatal(:msg => "Required option \"#{option[:name]}\" not specified.", :dots => false)          
           elsif option[:value] == true and option[:type] == :action then
             option.action.call
           end
