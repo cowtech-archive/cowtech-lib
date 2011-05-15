@@ -227,11 +227,11 @@ module Cowtech
       def copy(args)
         rv = true
         move = args[:move]
+        dest = args[:dest]
 
         # If we are copy or moving to a directory
         if args[:destination_is_directory] then
           files = (args[:files] || []).force_array
-          dest = args[:dest]
           dest += "/" if self.file_check?(:file => dest, :tests => :directory) and dest !~ /\/$/
 
           files.each do |file|
