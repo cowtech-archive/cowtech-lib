@@ -38,7 +38,7 @@ module Cowtech
       # 
       # Arguments:
       # * <em>msg</em>: The message to show
-      # * <em>cmd</em>: The command to run
+      # * <em>command</em>: The command to run
       # * <em>show_msg</em>: If show the exit message
       # * <em>show_exit</em>: If show the exit code
       # * <em>fatal</em>: If abort on failure
@@ -65,7 +65,7 @@ module Cowtech
         end
         rv[:output] = rv[:output].join("\n")
 
-        self.status(:status => rv[:status] == 0 ? :ok : :fail, :fatal => false) if args[:show_exit]
+        @console.status(:status => rv[:status] == 0 ? :ok : :fail, :fatal => false) if args[:show_exit]
         exit(1) if args[:fatal] and rv[:status] != 0
         rv
       end
@@ -156,7 +156,7 @@ module Cowtech
           rv = false
         end
 
-        rv ? rv : self.status(:fail, :fatal => args[:fatal])
+        rv ? rv : @console.status(:fail, :fatal => args[:fatal])
       end
 
       # Create directories (and any missing parent directory).
@@ -210,7 +210,7 @@ module Cowtech
           break unless rv
         end
 
-        rv ? rv : self.status(:fail, :fatal => args[:fatal])
+        rv ? rv : @console.status(:fail, :fatal => args[:fatal])
       end
 
       # Copy files to a destination directory.
@@ -290,7 +290,7 @@ module Cowtech
           end
         end
 
-        rv ? rv : self.status(:fail, :fatal => args[:fatal])
+        rv ? rv : @console.status(:fail, :fatal => args[:fatal])
       end
 
       # Rename a file.
@@ -312,7 +312,7 @@ module Cowtech
           rv = false
         end
 
-        rv ? rv : self.status(:fail, :fatal => args[:fatal])
+        rv ? rv : @console.status(:fail, :fatal => args[:fatal])
       end
 
       # Returns a list of files in specified paths which matchs one of requested patterns.
