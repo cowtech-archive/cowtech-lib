@@ -52,7 +52,7 @@ module Cowtech
 
         if @console.show_commands then
           @console.warn("Will run command: \"#{command}\"", :dots => false)
-          @command.status(:ok)
+          @console.status(:ok)
         end
 
         unless @console.skip_commands == true then
