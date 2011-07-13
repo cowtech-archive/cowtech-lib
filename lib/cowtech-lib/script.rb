@@ -88,8 +88,8 @@ module Cowtech
       
         # Run the block
         rv = yield
-        rv = :ok unless rv.is_a?(Symbol)
-        rv = [rv, true] unless rv.is_a?(Array)
+        rv = :ok if !rv.is_a?(Symbol)
+        rv = [rv, true] if !rv.is_a?(Array)
       
         # Show the result
         if args.fetch(:show_result, true) then

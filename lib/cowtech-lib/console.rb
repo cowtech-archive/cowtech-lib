@@ -176,7 +176,7 @@ module Cowtech
         end
         
         # Parse the message
-        unless args[:plain] then
+        if !args[:plain] then
           begin
             xml = "<text>#{msg}</text>"
             msg = self.parse_message(REXML::Document.new(xml).root)
@@ -286,11 +286,11 @@ module Cowtech
       def read(args)
         # Adjust prompt
         msg = args[:msg] + ((msg !~ /([:?](\s*))$/) ? ":" : "")
-        msg += " " unless msg =~ / ^/
+        msg += " " if msg !~ / ^/
 
         # Turn choices into regular expressions
         regexps = (args[:valids] || []).force_array.collect do |valid|
-          unless valid.is_a?(Regexp) then
+          if !valid.is_a?(Regexp) then
             valid = Regexp.new((valid !~ /^\^/ ? "^" : "") + valid + (valid !~ /\$$/ ? "$" : ""), Regexp::EXTENDED + (args[:case_sensitive] ? Regexp::IGNORECASE : 0), "U")
           else
             valid

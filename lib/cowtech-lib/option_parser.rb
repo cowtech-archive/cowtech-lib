@@ -66,10 +66,10 @@ module Cowtech
       # * <em>:required</em>: Whether the option is required
       # * <em>:priority</em>: Priority for the option. Used only on the help message to sort (by increasing priority) the options.
       def <<(options)
-        options = [options] unless options.is_a?(Array)
+        options = [options] if !options.is_a?(Array)
 
         options.each do |option|
-          @console.fatal(:msg => "Every attribute must be an Hash.", :dots => false) unless option.is_a?(Hash)
+          @console.fatal(:msg => "Every attribute must be an Hash.", :dots => false) if !option.is_a?(Hash)
       
           # Use symbols for names
           option[:name] = option[:name].to_sym
@@ -78,26 +78,26 @@ module Cowtech
           option[:type] ||= :string
 
           # Check if type is valid
-          @console.fatal(:msg => "Invalid option type #{option[:type]} for option #{option[:name]}. Valid type are the following:\n\t#{@@valid_types.keys.join(", ")}.", :dots => false) unless @@valid_types.keys.include?(option[:type])
+          @console.fatal(:msg => "Invalid option type #{option[:type]} for option #{option[:name]}. Valid type are the following:\n\t#{@@valid_types.keys.join(", ")}.", :dots => false) if !@@valid_types.keys.include?(option[:type])
         
           # Adjust the default value
           case option[:type]
             when :bool then
-              option[:default] = false unless option[:default] == true
+              option[:default] = false if !option[:default] == true
             when :action then
               option[:required] = false
             else
-              option[:default] = @@valid_types[option[:type]][1] unless option[:default].is_a?(@@valid_types[option[:type]][0]) == true || option[:default] != nil
+              option[:default] = @@valid_types[option[:type]][1] if ! (option[:default].is_a?(@@valid_types[option[:type]][0]) == true && option[:default] != nil)
           end
 
           # Adjust priority
-          option[:priority] = option[:priority].to_s.to_i unless option[:priority].is_a?(Integer)
+          option[:priority] = option[:priority].to_s.to_i if !option[:priority].is_a?(Integer)
       
           # Prepend dashes
-          option[:short] = "-" + option[:short] unless option[:short] =~ /^-/
+          option[:short] = "-" + option[:short] if !option[:short] =~ /^-/
           while not option[:long] =~ /^--/ do option[:long] = "-" + option[:long] end
-          @console.fatal(:msg => "Invalid short form \"#{option[:short]}\".", :dots => false) unless option[:short] =~ /^-[0-9a-z]$/i
-          @console.fatal(:msg => "Invalid long form \"#{option[:long]}\".", :dots => false) unless option[:long] =~ /^--([0-9a-z-]+)$/i
+          @console.fatal(:msg => "Invalid short form \"#{option[:short]}\".", :dots => false) if !option[:short] =~ /^-[0-9a-z]$/i
+          @console.fatal(:msg => "Invalid long form \"#{option[:long]}\".", :dots => false) if !option[:long] =~ /^--([0-9a-z-]+)$/i
       
           # Check for choices if the type is choices
           if option[:type] == :choice then
@@ -170,7 +170,7 @@ module Cowtech
             given = $1
 
             if exception.is_a?(GetoptLong::InvalidOption) then
-              @console.fatal(:msg => "Unknown option \"#{given}\".", :dots => false) unless args[:ignore_unknown]
+              @console.fatal(:msg => "Unknown option \"#{given}\".", :dots => false) if !args[:ignore_unknown]
             elsif exception.is_a?(GetoptLong::MissingArgument) then
               @console.fatal(:msg => "Option \"-#{given}\" requires an argument.", :dots => false)
             end
@@ -240,7 +240,7 @@ module Cowtech
       # * <em>options</em>: Options list
       # Returns: If a single argument is provided, only a value is returned, else an hash (name => value). If no argument is provided, return every option
       def [](*options)
-        options = [options] unless options.is_a?(Array)
+        options = [options] if !options.is_a?(Array)
         options = @options.keys if options.length == 0
 
         if options.length == 1 then
@@ -289,7 +289,7 @@ module Cowtech
           opt = @options[key]
         
           popt = "#{[opt[:short], opt[:long]].join(", ")}"
-          popt += ("=" + (if opt[:meta] then opt[:meta] else "ARG" end)) unless [:bool, :action].include?(opt[:type])
+          popt += ("=" + (if opt[:meta] then opt[:meta] else "ARG" end)) if ![:bool, :action].include?(opt[:type])
           popts[key] = popt
           maxlen = popt.length if popt.length > maxlen
         end

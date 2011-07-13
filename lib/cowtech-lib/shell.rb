@@ -55,7 +55,7 @@ module Cowtech
           @console.status(:ok)
         end
 
-        unless @console.skip_commands == true then
+        if !@console.skip_commands == true then
           rv[:status] = Open4::open4(command + " 2>&1") { |pid, stdin, stdout, stderr|
             stdout.each_line do |line|
               rv[:output] << line
@@ -207,7 +207,7 @@ module Cowtech
             end
           end
 
-          break unless rv
+          break if !rv
         end
 
         rv ? rv : @console.status(:fail, :fatal => args[:fatal])
@@ -261,16 +261,16 @@ module Cowtech
               rv = false
             end
 
-            break unless rv
+            break if !rv
           end
         else # If we are copying or moving to a file
-          unless files.kind_of?(String) == true and dest.kind_of?(String) == true then
+          if !files.kind_of?(String) == true and dest.kind_of?(String) == true then
             @console.error("Cowtech::Lib::Shell#copy: To copy a single file, both files and dest arguments must be a string.", :dots => false, :fatal => args[:fatal])
             rv = false
           else
             dst_dir = File.dirname(dest)
 
-            unless self.file_check?(:file => dst_dir, :tests => [:exists, :directory]) then
+            if !self.file_check?(:file => dst_dir, :tests => [:exists, :directory]) then
               self.create_directories(:files => dst_dir, :mode => 0755, :fatal => args[:fatal], :show_errors => args[:show_errors])
             end
 
