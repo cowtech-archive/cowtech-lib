@@ -107,7 +107,7 @@ module Cowtech
       # Returns: The new text
       def parse_message(node, stack = [])
         rv = ""
-        styles = (node.name == "text" and node.attributes["style"]) ? node.attributes["style"].split(" ") : nil
+        styles = (node.name == "text" && node.attributes["style"]) ? node.attributes["style"].split(" ") : nil
 
         # Add style of current tag
         if styles then

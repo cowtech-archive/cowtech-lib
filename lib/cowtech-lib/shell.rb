@@ -55,7 +55,7 @@ module Cowtech
           @console.status(:ok)
         end
 
-        if !@console.skip_commands == true then
+        if !@console.skip_commands then
           rv[:status] = Open4::open4(command + " 2>&1") { |pid, stdin, stdout, stderr|
             stdout.each_line do |line|
               rv[:output] << line
@@ -66,7 +66,7 @@ module Cowtech
         rv[:output] = rv[:output].join("\n")
 
         @console.status(:status => rv[:status] == 0 ? :ok : :fail, :fatal => false) if args[:show_exit]
-        exit(1) if args[:fatal] and rv[:status] != 0
+        exit(1) if args[:fatal] && rv[:status] != 0
         rv
       end
 
@@ -232,7 +232,7 @@ module Cowtech
         # If we are copy or moving to a directory
         if args[:destination_is_directory] then
           files = (args[:files] || []).force_array
-          dest += "/" if self.file_check?(:file => dest, :tests => :directory) and dest !~ /\/$/
+          dest += "/" if self.file_check?(:file => dest, :tests => :directory) && dest !~ /\/$/
 
           files.each do |file|
             begin
@@ -264,7 +264,7 @@ module Cowtech
             break if !rv
           end
         else # If we are copying or moving to a file
-          if !files.kind_of?(String) == true and dest.kind_of?(String) == true then
+          if !files.kind_of?(String) && !dest.kind_of?(String) == true then
             @console.error("Cowtech::Lib::Shell#copy: To copy a single file, both files and dest arguments must be a string.", :dots => false, :fatal => args[:fatal])
             rv = false
           else
@@ -275,7 +275,7 @@ module Cowtech
             end
 
             begin
-              if move == true then
+              if move then
                 FileUtils.move(files, dest, {:noop => @console.skip_commands, :verbose => @console.skip_commands})
               else
                 FileUtils.cp(files, dest, {:noop => @console.skip_commands, :verbose => @console.skip_commands})
@@ -305,7 +305,7 @@ module Cowtech
       def rename(args)
         rv = true
 
-        if src.is_a?(String) and dst.is_a?(String) then
+        if src.is_a?(String) && dst.is_a?(String) then
           rv = self.copy(:from => src, :to => dst, :show_errors => args[:show_errors], :fatal => args[:fatal])
         else
           @console.error("Cowtech::Lib::Shell#rename: Both :src and :dst arguments must be a string.", :dots => false, :fatal => args[:fatal]) if args[:show_error]

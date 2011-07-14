@@ -83,11 +83,11 @@ module Cowtech
           # Adjust the default value
           case option[:type]
             when :bool then
-              option[:default] = false if !option[:default] == true
+              option[:default] = false if option[:default] == false
             when :action then
               option[:required] = false
             else
-              option[:default] = @@valid_types[option[:type]][1] if ! (option[:default].is_a?(@@valid_types[option[:type]][0]) == true && option[:default] != nil)
+              option[:default] = @@valid_types[option[:type]][1] if option[:default].is_a?(@@valid_types[option[:type]][0]) && option[:default] != nil
           end
 
           # Adjust priority
@@ -95,9 +95,9 @@ module Cowtech
       
           # Prepend dashes
           option[:short] = "-" + option[:short] if !option[:short] =~ /^-/
-          while not option[:long] =~ /^--/ do option[:long] = "-" + option[:long] end
-          @console.fatal(:msg => "Invalid short form \"#{option[:short]}\".", :dots => false) if !option[:short] =~ /^-[0-9a-z]$/i
-          @console.fatal(:msg => "Invalid long form \"#{option[:long]}\".", :dots => false) if !option[:long] =~ /^--([0-9a-z-]+)$/i
+          while option[:long] !~ /^--/ do option[:long] = "-" + option[:long] end
+          @console.fatal(:msg => "Invalid short form \"#{option[:short]}\".", :dots => false) if option[:short] !~ /^-[0-9a-z]$/i
+          @console.fatal(:msg => "Invalid long form \"#{option[:long]}\".", :dots => false) if option[:long] !~ /^--([0-9a-z-]+)$/i
       
           # Check for choices if the type is choices
           if option[:type] == :choice then
@@ -154,7 +154,7 @@ module Cowtech
               when :int then
                 if arg.strip =~ /^(-?)(\d+)$/ then value = arg.to_i(10) else @console.fatal(:msg => "Argument of option \"#{given}\" must be an integer.", :dots => false) end
               when :float then
-                if arg.strip =~ /^(-?)(\d*)(\.(\d+))?$/ and arg.strip() != "." then value = arg.to_f else @console.fatal(:msg => "Argument of option \"#{given}\" must be a float.", :dots => false) end
+                if arg.strip =~ /^(-?)(\d*)(\.(\d+))?$/ && arg.strip() != "." then value = arg.to_f else @console.fatal(:msg => "Argument of option \"#{given}\" must be a float.", :dots => false) end
               when :choice then
                 if @options[optname].choices.find_index { |choice| arg =~ choice } then value = arg else @console.fatal(:msg => "Invalid argument (invalid choice) for option \"#{given}\".", :dots => false) end
               when :list then
@@ -183,7 +183,7 @@ module Cowtech
         @args = ARGV
 
         # CHECK IF HELP WAS REQUESTED
-        if self.provided?("help") and !args[:ignore_help] then
+        if self.provided?("help") && !args[:ignore_help] then
           self.print_help
           exit(0)
         end
@@ -192,9 +192,9 @@ module Cowtech
         @inserted[:name].each do |key|
           option = @options[key]
 
-          if option[:required] == true and option[:value] == nil then
+          if option[:required] == true && option[:value] == nil then
             @console.fatal(:msg => "Required option \"#{option[:name]}\" not specified.", :dots => false)          
-          elsif option[:value] == true and option[:type] == :action then
+          elsif option[:value] == true && option[:type] == :action then
             option.action.call
           end
         end      
