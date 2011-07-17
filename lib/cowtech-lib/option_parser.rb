@@ -83,11 +83,11 @@ module Cowtech
           # Adjust the default value
           case option[:type]
             when :bool then
-              option[:default] = false if option[:default] == false
+              option[:default] = false if option.has_key?(:default)
             when :action then
               option[:required] = false
             else
-              option[:default] = @@valid_types[option[:type]][1] if option[:default].is_a?(@@valid_types[option[:type]][0]) && option[:default] != nil
+              option[:default] = @@valid_types[option[:type]][1] if !option.has_key?(:default) || !option[:default].is_a?(@@valid_types[option[:type]][0])
           end
 
           # Adjust priority
