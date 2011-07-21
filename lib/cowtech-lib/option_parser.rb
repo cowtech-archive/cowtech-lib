@@ -83,7 +83,7 @@ module Cowtech
           # Adjust the default value
           case option[:type]
             when :bool then
-              option[:default] = false if option.has_key?(:default)
+              option[:default] = false if !option.has_key?(:default)
             when :action then
               option[:required] = false
             else

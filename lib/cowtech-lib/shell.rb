@@ -264,6 +264,8 @@ module Cowtech
             break if !rv
           end
         else # If we are copying or moving to a file
+          files = args[:files]
+          
           if !files.kind_of?(String) && !dest.kind_of?(String) == true then
             @console.error("Cowtech::Lib::Shell#copy: To copy a single file, both files and dest arguments must be a string.", :dots => false, :fatal => args[:fatal])
             rv = false
@@ -281,10 +283,10 @@ module Cowtech
                 FileUtils.cp(files, dest, {:noop => @console.skip_commands, :verbose => @console.skip_commands})
               end
             rescue StandardError => e
-              self.error("Cannot #{if move then "move" else "copy" end} entry <text style=\"bold white\">#{files}</text> to non-writable entry<text style=\"bold white\"> #{dest}</text>", :dots => false, :fatal => args[:fatal]) if args[:show_errors] && (e.message =~ /^Permission denied - (.+)/)
+              @console.error("Cannot #{if move then "move" else "copy" end} entry <text style=\"bold white\">#{files}</text> to non-writable entry<text style=\"bold white\"> #{dest}</text>", :dots => false, :fatal => args[:fatal]) if args[:show_errors] && (e.message =~ /^Permission denied - (.+)/)
               rv = false
             rescue Exception => e
-              self.error("Cannot #{if move then "move" else "copy" end} <text style=\"bold white\">#{files}</text> to <text style=\"bold_white\">#{dest}</text> due to an error: <text style=\"bold red\">#{e}</text>", :dots => false, :fatal => args[:fatal]) if args[:show_errors]
+              @console.error("Cannot #{if move then "move" else "copy" end} <text style=\"bold white\">#{files}</text> to <text style=\"bold_white\">#{dest}</text> due to an error: <text style=\"bold red\">#{e}</text>", :dots => false, :fatal => args[:fatal]) if args[:show_errors]
               rv = false
             end
           end
