@@ -43,3 +43,7 @@ pkg
 #
 # For vim:
 #*.swp
+
+# Eclipse
+.project
+.settings/
