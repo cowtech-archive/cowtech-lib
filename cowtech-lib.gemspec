@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{cowtech-lib}
-  s.version = "1.9.6.5"
+  s.name = "cowtech-lib"
+  s.version = "1.9.7.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Shogun}]
-  s.date = %q{2011-09-28}
-  s.description = %q{A general purpose utility library.}
-  s.email = %q{shogun_panda@me.com}
+  s.authors = ["Shogun"]
+  s.date = "2012-01-08"
+  s.description = "A general purpose utility library."
+  s.email = "shogun_panda@me.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -30,11 +30,11 @@ Gem::Specification.new do |s|
     "lib/cowtech-lib/shell.rb",
     "lib/cowtech-lib/version.rb"
   ]
-  s.homepage = %q{http://github.com/ShogunPanda/cowtech-lib}
-  s.licenses = [%q{MIT}]
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.5}
-  s.summary = %q{A general purpose utility library.}
+  s.homepage = "http://github.com/ShogunPanda/cowtech-lib"
+  s.licenses = ["MIT"]
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.11"
+  s.summary = "A general purpose utility library."
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
