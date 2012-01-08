@@ -92,10 +92,8 @@ module Cowtech
         rv = [rv, true] if !rv.is_a?(Array)
       
         # Show the result
-        if args.fetch(:show_result, true) then
-          @console.status(:status => rv[0], :fatal => false)
-          @console.indent_set(-3)
-        end
+        @console.status(:status => rv[0], :fatal => false) if args.fetch(:show_result, true)
+        @console.indent_set(-3) if args.fetch(:show_msg, true)
 
         exit(1) if rv[0] != :ok && rv[1]
         rv
