@@ -243,13 +243,13 @@ module Cowtech
               end
             rescue StandardError => e
               if args[:show_errors] && e.message =~ /^Permission denied - (.+)/ then
-                self.error("Cannot #{if must_move then "move" else "copy" end} entry <text style=\"bold white\">#{file}</text> to non-writable entry <text style=\"bold white\">#{dest}</text>", false, false, false) if m != nil
+                self.error("Cannot #{must_move ? "move" : "copy"} entry <text style=\"bold white\">#{file}</text> to non-writable entry <text style=\"bold white\">#{dest}</text>", false, false, false) if m != nil
               end
 
               rv = false
             rescue Exception => e
               if args[:show_errors] then
-                @console.error("Cannot #{if move then "move" else "copy" end} following entries to <text style=\"bold white\">#{dest}</text>:", :dots => false)
+                @console.error("Cannot #{move ? "move" : "copy"} following entries to <text style=\"bold white\">#{dest}</text>:", :dots => false)
                 @console.indent_region(3) do
                   files.each do |afile|
                     @console.write(:msg => afile, :dots => false)
@@ -283,10 +283,10 @@ module Cowtech
                 FileUtils.cp(files, dest, {:noop => @console.skip_commands, :verbose => @console.skip_commands})
               end
             rescue StandardError => e
-              @console.error("Cannot #{if move then "move" else "copy" end} entry <text style=\"bold white\">#{files}</text> to non-writable entry<text style=\"bold white\"> #{dest}</text>", :dots => false, :fatal => args[:fatal]) if args[:show_errors] && (e.message =~ /^Permission denied - (.+)/)
+              @console.error("Cannot #{move ? "move" : "copy"} entry <text style=\"bold white\">#{files}</text> to non-writable entry<text style=\"bold white\"> #{dest}</text>", :dots => false, :fatal => args[:fatal]) if args[:show_errors] && (e.message =~ /^Permission denied - (.+)/)
               rv = false
             rescue Exception => e
-              @console.error("Cannot #{if move then "move" else "copy" end} <text style=\"bold white\">#{files}</text> to <text style=\"bold_white\">#{dest}</text> due to an error: <text style=\"bold red\">#{e}</text>", :dots => false, :fatal => args[:fatal]) if args[:show_errors]
+              @console.error("Cannot #{move ? "move" : "copy"} <text style=\"bold white\">#{files}</text> to <text style=\"bold_white\">#{dest}</text> due to an error: <text style=\"bold red\">#{e}</text>", :dots => false, :fatal => args[:fatal]) if args[:show_errors]
               rv = false
             end
           end

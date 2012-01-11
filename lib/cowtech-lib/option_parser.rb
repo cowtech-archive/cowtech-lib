@@ -104,7 +104,7 @@ module Cowtech
             if option[:choices] == nil then
               @console.fatal(:msg => "Option \"#{option[:name]}\" of type choice requires a valid choices list (every element should be a regular expression).")
             else
-              option[:choices].collect! do |choice| Regexp.new(choice) end
+              option[:choices].collect! { |choice| Regexp.new(choice) }
             end
           end
       
@@ -134,7 +134,7 @@ module Cowtech
         args ||= {}
         # Create options
         noat = [:bool, :action]
-        sopts = @options.each_value.collect do |option| [option[:long], option[:short], noat.include?(option[:type]) ? GetoptLong::NO_ARGUMENT : GetoptLong::REQUIRED_ARGUMENT] end
+        sopts = @options.each_value.collect { |option| [option[:long], option[:short], noat.include?(option[:type]) ? GetoptLong::NO_ARGUMENT : GetoptLong::REQUIRED_ARGUMENT] }
 
         opts = GetoptLong.new(*sopts)
         opts.quiet = true
@@ -146,17 +146,28 @@ module Cowtech
             option = @options[optname]
             value = nil
 
-          
             # VALIDATE ARGUMENT DUE TO CASE
             case option[:type]
               when :string then
                 value = arg
               when :int then
-                if arg.strip =~ /^(-?)(\d+)$/ then value = arg.to_i(10) else @console.fatal(:msg => "Argument of option \"#{given}\" must be an integer.", :dots => false) end
+                if arg.strip =~ /^(-?)(\d+)$/ then 
+									value = arg.to_i(10) 
+								else 
+									@console.fatal(:msg => "Argument of option \"#{given}\" must be an integer.", :dots => false) 
+								end
               when :float then
-                if arg.strip =~ /^(-?)(\d*)(\.(\d+))?$/ && arg.strip() != "." then value = arg.to_f else @console.fatal(:msg => "Argument of option \"#{given}\" must be a float.", :dots => false) end
+                if arg.strip =~ /^(-?)(\d*)(\.(\d+))?$/ && arg.strip() != "." then 
+									value = arg.to_f 
+								else 
+									@console.fatal(:msg => "Argument of option \"#{given}\" must be a float.", :dots => false) 
+								end
               when :choice then
-                if @options[optname].choices.find_index { |choice| arg =~ choice } then value = arg else @console.fatal(:msg => "Invalid argument (invalid choice) for option \"#{given}\".", :dots => false) end
+                if @options[optname].choices.find_index { |choice| arg =~ choice } then 
+									value = arg 
+								else 
+									@console.fatal(:msg => "Invalid argument (invalid choice) for option \"#{given}\".", :dots => false) 
+								end
               when :list then
                 value = arg.split(",")
               else
@@ -264,17 +275,17 @@ module Cowtech
         # Print app name
         if @app_name then
           print "#{@app_name}"
-          if @app_version > 0 then print " #{@app_version}" end
-          if @description then print " - #{@description}" end
+          print " #{@app_version}" if @app_version > 0
+          print " - #{@description}" if @description
           print "\n"
         end
       
         # Print usage
-        if @messages["pre_usage"] then print "#{@messages["pre_usage"]}\n" end
-        print "#{if @usage then @usage else "Usage: #{ARGV[0]} [OPTIONS]" end}\n"
+        print "#{@messages["pre_usage"]}\n" if @messages["pre_usage"]
+        print "#{@usage ? @usage : "Usage: #{ARGV[0]} [OPTIONS]"}\n"
 
         # Print pre_options
-        if @messages["pre_options"] then print "#{@messages["pre_options"]}\n" end
+        print "#{@messages["pre_options"]}\n" if @messages["pre_options"]
         print "\nValid options are:\n"
       
         # Order options for printing
@@ -289,7 +300,7 @@ module Cowtech
           opt = @options[key]
         
           popt = "#{[opt[:short], opt[:long]].join(", ")}"
-          popt += ("=" + (if opt[:meta] then opt[:meta] else "ARG" end)) if ![:bool, :action].include?(opt[:type])
+          popt += ("=" + (opt[:meta] ? opt[:meta] : "ARG")) if ![:bool, :action].include?(opt[:type])
           popts[key] = popt
           maxlen = popt.length if popt.length > maxlen
         end
@@ -301,7 +312,7 @@ module Cowtech
         end
       
         # Print post_options
-        if @messages["post_options"] then print "#{@messages["post_options"]}\n" end
+        print "#{@messages["post_options"]}\n" if @messages["post_options"] then
       end
     
       #Creates a new OptionParser.
@@ -327,7 +338,11 @@ module Cowtech
 
         # Copy messages
         messages = args[:messages] || {}
-        if messages.is_a?(Hash) then @messages = messages else @console.fatal(:msg => "CowtechLib::OptionParser::initialize msgs argument must be an hash.") end
+        if messages.is_a?(Hash) then 
+					@messages = messages 
+				else 
+					@console.fatal(:msg => "CowtechLib::OptionParser::initialize msgs argument must be an hash.") 
+				end
       
         # Initialize variables
         @console = Console.new
