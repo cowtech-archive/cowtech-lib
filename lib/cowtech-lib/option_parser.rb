@@ -312,7 +312,7 @@ module Cowtech
         end
       
         # Print post_options
-        print "#{@messages["post_options"]}\n" if @messages["post_options"] then
+        print "#{@messages["post_options"]}\n" if @messages["post_options"]
       end
     
       #Creates a new OptionParser.
