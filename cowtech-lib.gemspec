@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "cowtech-lib"
-  s.version = "1.9.7.0"
+  s.version = "1.9.8.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shogun"]
-  s.date = "2012-01-08"
+  s.date = "2012-01-11"
   s.description = "A general purpose utility library."
   s.email = "shogun_panda@me.com"
   s.extra_rdoc_files = [
