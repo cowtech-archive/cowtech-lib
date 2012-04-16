@@ -18,6 +18,7 @@ Jeweler::Tasks.new do |gem|
 	gem.authors = ["Shogun"]
 	gem.version = Cowtech::Lib::Version::STRING
 	gem.add_dependency "open4"
+	gem.required_ruby_version = ">= 1.9.2"
 end
 
 Jeweler::RubygemsDotOrgTasks.new
