@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "cowtech-lib"
-  s.version = "2.0.0"
+  s.version = "2.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shogun"]
@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
-    ".document",
     "Gemfile",
     "README.rdoc",
     "Rakefile",
@@ -31,6 +30,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/ShogunPanda/cowtech-lib"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
+  s.required_ruby_version = Gem::Requirement.new(">= 1.9.2")
   s.rubygems_version = "1.8.15"
   s.summary = "A general purpose utility library."
 
