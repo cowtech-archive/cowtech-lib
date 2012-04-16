@@ -4,51 +4,51 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = "cowtech-lib"
-  s.version = "1.9.8.1"
+	s.name = "cowtech-lib"
+	s.version = "1.9.8.1"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Shogun"]
-  s.date = "2012-01-11"
-  s.description = "A general purpose utility library."
-  s.email = "shogun_panda@me.com"
-  s.extra_rdoc_files = [
-    "LICENSE.txt",
-    "README.rdoc"
-  ]
-  s.files = [
-    ".document",
-    "Gemfile",
-    "LICENSE.txt",
-    "README.rdoc",
-    "Rakefile",
-    "cowtech-lib.gemspec",
-    "lib/cowtech-lib.rb",
-    "lib/cowtech-lib/console.rb",
-    "lib/cowtech-lib/option_parser.rb",
-    "lib/cowtech-lib/script.rb",
-    "lib/cowtech-lib/shell.rb",
-    "lib/cowtech-lib/version.rb"
-  ]
-  s.homepage = "http://github.com/ShogunPanda/cowtech-lib"
-  s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.11"
-  s.summary = "A general purpose utility library."
+	s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+	s.authors = ["Shogun"]
+	s.date = "2012-01-11"
+	s.description = "A general purpose utility library."
+	s.email = "shogun_panda@me.com"
+	s.extra_rdoc_files = [
+		"LICENSE.txt",
+			"README.rdoc"
+	]
+	s.files = [
+		".document",
+			"Gemfile",
+			"LICENSE.txt",
+			"README.rdoc",
+			"Rakefile",
+			"cowtech-lib.gemspec",
+			"lib/cowtech-lib.rb",
+			"lib/cowtech-lib/console.rb",
+			"lib/cowtech-lib/option_parser.rb",
+			"lib/cowtech-lib/script.rb",
+			"lib/cowtech-lib/shell.rb",
+			"lib/cowtech-lib/version.rb"
+	]
+	s.homepage = "http://github.com/ShogunPanda/cowtech-lib"
+	s.licenses = ["MIT"]
+	s.require_paths = ["lib"]
+	s.rubygems_version = "1.8.11"
+	s.summary = "A general purpose utility library."
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 3
+	if s.respond_to? :specification_version then
+		s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<jeweler>, [">= 0"])
-      s.add_runtime_dependency(%q<open4>, [">= 0"])
-    else
-      s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<open4>, [">= 0"])
-    end
-  else
-    s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<open4>, [">= 0"])
-  end
+		if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+			s.add_runtime_dependency(%q<jeweler>, [">= 0"])
+			s.add_runtime_dependency(%q<open4>, [">= 0"])
+		else
+			s.add_dependency(%q<jeweler>, [">= 0"])
+			s.add_dependency(%q<open4>, [">= 0"])
+		end
+	else
+		s.add_dependency(%q<jeweler>, [">= 0"])
+		s.add_dependency(%q<open4>, [">= 0"])
+	end
 end
 
