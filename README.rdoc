@@ -1,7 +1,8 @@
 = cowtech-lib
 
+== END OF DEVELOPMENT NOTICE - This gem has been discontinued
+
 A general purpose utility library.
-http://github.com/ShogunPanda/cowtech-lib
 
 == Contributing to cowtech-lib
  
